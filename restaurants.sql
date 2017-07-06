@@ -17,7 +17,7 @@ RETURNING *;
 --Add recent dining experience
 INSERT INTO meals (id, restaurant_id, notes) VALUES (
     current_date /* replace with date string if not today! */
-    , (SELECT id FROM restaurants WHERE restaurant_name = '')
+    , (SELECT id FROM restaurants WHERE restaurant_name ILIKE '%' LIMIT 1)
     , null /* replace  with any pertinent notes about experience */
 ) RETURNING *;
 
@@ -35,7 +35,7 @@ WHERE id = floor(cnt.x * (cnt.y + 1)) + 9
 LIMIT 1;
 
 --List restaurants that you have not eaten at
-select restaurant_name
-from restaurants r
-left outer join meals m on r.id = m.restaurant_id
-where m.id is null
+SELECT restaurant_name
+FROM restaurants r
+LEFT OUTER JOIN meals m ON r.id = m.restaurant_id
+WHERE m.id IS NULL
