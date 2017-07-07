@@ -22,16 +22,11 @@ INSERT INTO meals (id, restaurant_id, notes) VALUES (
 ) RETURNING *;
 
 --Select a restaurant at random
-WITH cnt AS (
-    SELECT
-        count(*) AS y
-        , random() AS x
-    FROM restaurants
-)
 SELECT
-    r.*
-FROM restaurants r, cnt
-WHERE id = floor(cnt.x * (cnt.y + 1)) + 9
+    restaurant_name
+    , cuisine
+FROM restaurants
+OFFSET floor(random() * (SELECT count(*) FROM restaurants))
 LIMIT 1;
 
 --List restaurants that you have not eaten at
