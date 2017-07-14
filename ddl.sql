@@ -2,9 +2,7 @@
 
 CREATE TABLE meals
 (
-    id text PRIMARY KEY DEFAULT (TO_CHAR(current_date, 'YYYY') ||
-        TO_CHAR(current_date, 'MM') ||
-        TO_CHAR(current_date, 'DD'))::int
+    id text PRIMARY KEY DEFAULT TO_CHAR(current_date, 'YYYYMMDD')::int
     , restaurant_id uuid NOT NULL
     , times_eaten integer NOT NULL DEFAULT 1
     , notes text
@@ -57,8 +55,7 @@ INSERT INTO dates
     (id, date, date_text, year, quarter, month, month_text, isoweek
     , week_of_month, day_of_month, day_of_year, day_text, end_of_month)
 SELECT
-    (TO_CHAR(daterow::date, 'YYYY') || TO_CHAR(daterow::date, 'MM') ||
-        TO_CHAR(daterow::date, 'DD'))::int AS id
+    TO_CHAR(daterow::date, 'YYYYMMDD')::int AS id
     , daterow::date AS date
     , TO_CHAR(daterow::date, 'FMDay, FMMonth FMDDth, YYYY') AS date_text
     , TO_CHAR(daterow::date, 'YYYY')::int AS year

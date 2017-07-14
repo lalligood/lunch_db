@@ -16,7 +16,7 @@ RETURNING *;
 
 --Add recent dining experience
 INSERT INTO meals (id, restaurant_id, notes) VALUES (
-    current_date /* replace with date string if not today! */
+    to_char(current_date, 'YYYYMMDD')::int /* replace with date string if not today! */
     , (SELECT id FROM restaurants WHERE restaurant_name ILIKE '%' LIMIT 1)
     , null /* replace  with any pertinent notes about experience */
 ) RETURNING *;
