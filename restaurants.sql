@@ -1,3 +1,9 @@
+--Where I have eaten recently
+SELECT * FROM recent_meals;
+
+--...and where I have not
+SELECT * FROM not_recent;
+
 --Add new restaurants
 INSERT INTO restaurants
     (restaurant_name, cuisine, cost, website, notes) VALUES (
