@@ -77,10 +77,19 @@ CREATE OR REPLACE VIEW public.recent_meals AS (
     SELECT
         d.date
         , r.restaurant_name AS restaurant
-        , COALESCE(m.notes, r.notes) AS "coalesce"
+        , COALESCE(m.notes, r.notes) AS notes
     FROM meals m
     JOIN restaurants r ON r.id = m.restaurant_id
     JOIN dates d ON d.id = m.id
-    WHERE d.date >= ('now'::text::date - 30)
+    WHERE d.date >= (current_date - 45)
     ORDER BY m.id DESC
 );
+
+-- DROP VIEW not_recent;
+
+CREATE OR REPLACE VIEW public.not_recent AS
+    SELECT r.restaurant_name
+        , r.cuisine
+    FROM restaurants r
+    WHERE NOT (r.restaurant_name IN (SELECT recent_meals.restaurant
+        FROM recent_meals));
