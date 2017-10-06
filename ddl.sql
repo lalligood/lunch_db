@@ -90,6 +90,8 @@ CREATE OR REPLACE VIEW public.recent_meals AS (
 CREATE OR REPLACE VIEW public.not_recent AS
     SELECT r.restaurant_name
         , r.cuisine
+        , r.website
+        , r.notes
     FROM restaurants r
     WHERE NOT (r.restaurant_name IN (SELECT recent_meals.restaurant
         FROM recent_meals));
