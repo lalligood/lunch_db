@@ -88,10 +88,20 @@ CREATE OR REPLACE VIEW public.recent_meals AS (
 -- DROP VIEW not_recent;
 
 CREATE OR REPLACE VIEW public.not_recent AS
-    SELECT r.restaurant_name
-        , r.cuisine
-        , r.website
-        , r.notes
-    FROM restaurants r
-    WHERE NOT (r.restaurant_name IN (SELECT recent_meals.restaurant
-        FROM recent_meals));
+WITH rm AS (
+    SELECT
+        MAX(d.date) AS date
+        , m.restaurant_id
+    FROM meals m
+    JOIN dates d ON d.id = m.id
+    GROUP BY m.restaurant_id
+)
+SELECT r.restaurant_name
+    , r.cuisine
+    , r.website
+    , r.notes
+    , COALESCE((current_date - rm.date), 0) AS days_since_last_visit
+FROM restaurants r
+LEFT OUTER JOIN rm ON rm.restaurant_id = r.id
+WHERE COALESCE((current_date - rm.date), 0) NOT BETWEEN 1 AND 44
+ORDER BY 5;
