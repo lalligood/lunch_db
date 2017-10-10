@@ -103,5 +103,5 @@ SELECT r.restaurant_name
     , COALESCE((current_date - rm.date), 0) AS days_since_last_visit
 FROM restaurants r
 LEFT OUTER JOIN rm ON rm.restaurant_id = r.id
-WHERE COALESCE((current_date - rm.date), 0) NOT BETWEEN 1 AND 44
+WHERE COALESCE((current_date - rm.date), -1) NOT BETWEEN 0 AND 44
 ORDER BY 5;
