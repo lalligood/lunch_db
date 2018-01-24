@@ -20,6 +20,7 @@ CREATE TABLE restaurants
     , cost text NOT NULL
     , website text
     , notes text
+    , active boolean DEFAULT true
 );
 
 CREATE INDEX restaurants_name ON restaurants (restaurant_name);
@@ -104,4 +105,5 @@ SELECT r.restaurant_name
 FROM restaurants r
 LEFT OUTER JOIN rm ON rm.restaurant_id = r.id
 WHERE COALESCE((current_date - rm.date), -1) NOT BETWEEN 0 AND 44
+    AND r.active = true
 ORDER BY 5 DESC;
