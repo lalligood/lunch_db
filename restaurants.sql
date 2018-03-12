@@ -17,7 +17,7 @@ INSERT INTO restaurants
 --Updating notes for existing restaurants
 UPDATE restaurants
     SET notes = ''
-WHERE restaurant_name = ''
+WHERE restaurant_name ILIKE '%%'
 RETURNING *;
 
 --Add recent dining experience
