@@ -17,6 +17,9 @@ INSERT INTO restaurants
 --Updating notes for existing restaurants
 UPDATE restaurants
     SET notes = ''
+        --, cuisine = ''
+        --, website = ''
+        --, active = True/False
 WHERE restaurant_name ILIKE '%%'
 RETURNING *;
 
