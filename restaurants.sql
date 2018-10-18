@@ -1,8 +1,15 @@
---Where I have eaten recently
+--Where I have not eaten recently
+SELECT * FROM not_recent;
+
+--...and where I have
 SELECT * FROM recent_meals;
 
---...and where I have not
-SELECT * FROM not_recent;
+--Add recent dining experience
+INSERT INTO meals (id, restaurant_id, notes) VALUES (
+    to_char(current_date, 'YYYYMMDD')::int /* replace with date string if not today! */
+    , (SELECT id FROM restaurants WHERE restaurant_name ILIKE '%%' LIMIT 1)
+    , null /* replace  with any pertinent notes about experience */
+) RETURNING *;
 
 --Add new restaurants
 INSERT INTO restaurants
@@ -22,13 +29,6 @@ UPDATE restaurants
         --, active = True/False
 WHERE restaurant_name ILIKE '%%'
 RETURNING *;
-
---Add recent dining experience
-INSERT INTO meals (id, restaurant_id, notes) VALUES (
-    to_char(current_date, 'YYYYMMDD')::int /* replace with date string if not today! */
-    , (SELECT id FROM restaurants WHERE restaurant_name ILIKE '%%' LIMIT 1)
-    , null /* replace  with any pertinent notes about experience */
-) RETURNING *;
 
 --Select a restaurant at random
 SELECT

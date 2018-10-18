@@ -106,4 +106,5 @@ FROM restaurants r
 LEFT OUTER JOIN rm ON rm.restaurant_id = r.id
 WHERE COALESCE((current_date - rm.date), -1) NOT BETWEEN 0 AND 44
     AND r.active = true
+    AND rm.date > current_date - 365
 ORDER BY 5 DESC;
