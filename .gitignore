@@ -1,0 +1,8 @@
+# Python complied files
+__pycache__/
+
+# IDE configuration files
+.vscode/
+
+# testing folder
+.pytest_cache/
