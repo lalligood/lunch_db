@@ -96,6 +96,16 @@ WITH rm AS (
     FROM meals m
     JOIN dates d ON d.id = m.id
     GROUP BY m.restaurant_id
+), new AS (
+    SELECT
+        restaurant_name
+        , cuisine
+        , website
+        , r.notes
+        , 0 AS days_since_last_visit
+    FROM restaurants r
+    LEFT OUTER JOIN meals m ON m.restaurant_id = r.id
+    WHERE m.restaurant_id is null
 )
 SELECT r.restaurant_name
     , r.cuisine
@@ -105,6 +115,8 @@ SELECT r.restaurant_name
 FROM restaurants r
 LEFT OUTER JOIN rm ON rm.restaurant_id = r.id
 WHERE COALESCE((current_date - rm.date), -1) NOT BETWEEN 0 AND 44
-    AND r.active = true
     AND rm.date > current_date - 365
-ORDER BY 5 DESC;
+    AND r.active = true
+UNION ALL
+SELECT * FROM new
+ORDER BY 5 DESC, 1;
