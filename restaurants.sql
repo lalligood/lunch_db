@@ -44,13 +44,14 @@ FROM restaurants r
 LEFT OUTER JOIN meals m ON r.id = m.restaurant_id
 WHERE m.id IS NULL;
 
---Simple analytics about places most eaten at
+--Simple analytics about top 20 places most eaten at
 SELECT
     r.restaurant_name AS restaurant
     , count(m.restaurant_id) AS times_eaten
     , to_date(max(m.id)::TEXT, 'YYYYMMDD') AS last_eaten
 FROM meals m
 INNER JOIN restaurants r ON r.id = m.restaurant_id
+WHERE r.active = True
 GROUP BY 1
-HAVING count(m.restaurant_id) >= 5
-ORDER BY 2 DESC, 3 DESC;
+ORDER BY 2 DESC, 3 DESC
+LIMIT 20;
