@@ -1,3 +1,5 @@
+*.backup
+
 # Python complied files
 __pycache__/
 
