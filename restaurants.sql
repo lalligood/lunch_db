@@ -16,7 +16,9 @@ INSERT INTO restaurants
     (restaurant_name, cuisine, cost, website, notes) VALUES (
     ''    /* restaurant_name */
     , ''  /* cuisine */
-    , 'cheap/moderate/expensive' /* cost */
+    , 'cheap'       /* cost --PICK ONLY 1 OF THESE 3!*/
+    --, 'moderate'  /* cost */
+    --, 'expensive' /* cost */
     , ''  /* website */
     , null  /* notes */
 ) RETURNING *;

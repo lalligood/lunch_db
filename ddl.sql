@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS moddatetime;
+
 --DROP TABLE IF EXISTS meals CASCADE;
 
 CREATE TABLE meals
@@ -6,9 +8,19 @@ CREATE TABLE meals
     , restaurant_id uuid NOT NULL
     , times_eaten integer NOT NULL DEFAULT 1
     , notes text
+    , inserted timestamp without time zone not null default now()
+    , last_modified timestamp without time zone not null default now()
 );
 
 CREATE INDEX meals_restaurants_id ON meals (restaurant_id);
+
+CREATE TRIGGER meals__last_modified
+    BEFORE UPDATE ON meals
+    FOR EACH ROW EXECUTE PROCEDURE moddatetime (last_modified);
+
+--DROP TYPE IF EXISTS cost_type;
+
+CREATE TYPE cost_type AS ENUM ('cheap', 'moderate', 'expensive');
 
 --DROP TABLE restaurants CASCADE;
 
@@ -17,13 +29,19 @@ CREATE TABLE restaurants
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4()
     , restaurant_name text UNIQUE NOT NULL
     , cuisine text NOT NULL
-    , cost text NOT NULL
+    , cost cost_type NOT NULL  /* See CREATE TYPE ... AS ENUM above! */
     , website text
     , notes text
     , active boolean DEFAULT true
+    , inserted timestamp without time zone not null default now()
+    , last_modified timestamp without time zone not null default now()
 );
 
 CREATE INDEX restaurants_name ON restaurants (restaurant_name);
+
+CREATE TRIGGER restaurants__last_modified
+    BEFORE UPDATE ON restaurants
+    FOR EACH ROW EXECUTE PROCEDURE moddatetime (last_modified);
 
 DROP TABLE IF EXISTS dates;
 
